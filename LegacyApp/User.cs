@@ -24,26 +24,28 @@ namespace LegacyApp
             Client = client;
         }
 
+        public bool CheckBudgetLimit() // zmienic nazwe 
+            => HasCreditLimit && CreditLimit < 500;
+
         private bool Validate(string firstName, string lastName, string emailAdress, DateTime dateOfBirth, object client)
         {
             if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-            {
                 return false;
-            }
 
             if (!emailAdress.Contains("@") && !emailAdress.Contains("."))
-            {
                 return false;
-            }
+
+            DateTime.Now.Subtract(dateOfBirth);
 
             var now = DateTime.Now;
             int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
+            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) 
+                age--;
 
             if (age < 21)
-            {
                 return false;
-            }
+
+            return true;
         }
     }
 }
